@@ -15,6 +15,8 @@ high--------------------------------
 readelf -l XXX.out    /* show ELF program header */
 Headers of type LOAD are copied into virtual memory when the file is loaded for execution.
 
+objdump -t XXX.out --> shows which symbol is in which segment
+
 gcc by step:
 1. preprocessing -->gcc -E test.c -o test.i
 2. compilation --> gcc -S test.i -o test.s
@@ -33,7 +35,7 @@ gcc -Wall test.c -o test /* generate as many warnings as possible */
 gcc -Werror test.c -o test /* stop compiliation when meets a warning */
 
 Header files are in /usr/include, and library files are in /usr/lib. If not, link libraries manually
-gcc -c -I /directory/to/header/.../include test.c -o test.o
-gcc -L /directory/to/lib/.../lib -lXXX test.o -o test
+1. gcc -c -I /directory/to/header/.../include test.c -o test.o
+2. gcc -L /directory/to/lib/.../lib -lXXX test.o -o test
 DLL (.so) is preferred. To force static (.a):
 gcc -L /directory/to/lib/.../lib -static -lXXX test.o -o test
