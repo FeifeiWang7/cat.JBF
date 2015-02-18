@@ -51,7 +51,7 @@ qemu-system-x86_64 -m 2048 -enable-kvm experiment.img -cdrom ~/Downloads/ubuntu-
 If it reports an error that device is busy, it means that either virtualbox or vmware is running on the same machine. The kernel module of virtualbox or vmware and KVM cannot take advantage of Intel VT-x or AMD-V at the same time. So ... deactivate them.
 
 ------ start VM ------
-qemu-system-x86_64 -m 2048 -enable-kvm fedora.img
+qemu-system-x86_64 -m 2048 -enable-kvm experiment.img
 
 ------ want graphical interface? ------
 install virt-manager
