@@ -1,4 +1,4 @@
------- install ------
+------ install qemu------
 If encountering "ERROR: glib-2.12 gthread-2.0 is required to compile QEMU":
 sudo apt-get install libglib2.0-dev zlib1g-dev
 To use the autogen script:
@@ -14,6 +14,15 @@ sudo apt-get install autoconf
 
 make 
 sudo make install
+
+------ install KVM ------
+check if CPU supports hardware virtualization
+grep -E 'vmx|svm' /proc/cpuinfo
+If there is output "vmx", show the face :)
+
+check if kvm module is loaded
+lsmod | grep kvm
+If there is output like "kvm_intel 143187 0" and "kvm 455835 1 kvm_intel", show the face :D
 
 ------ basic knowledge ------
 Each VM is a process in the host, and vCPU in the VM is a thread in the qemu process.
