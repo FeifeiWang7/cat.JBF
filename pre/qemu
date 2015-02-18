@@ -1,0 +1,29 @@
+------ install ------
+If encountering "ERROR: glib-2.12 gthread-2.0 is required to compile QEMU":
+sudo apt-get install libglib2.0-dev zlib1g-dev
+To use the autogen script:
+sudo apt-get install autoconf
+
+./configure --enable-kvm --enable-debug --enable-vnc --enable-werror --target-list="x86_64-softmmu"
+
+- configure is used to generate Makefile, for more information, use ./configure --help
+--enable-kvm: compile KVM modul, so that QEMU can use KVM to access hardware virtualization
+--enable-vnc: enable vnc
+--enalbe-werror: treat warnings as errors when compiling
+--target-list: choose target architecture for faster compilation because by default, it compiles all architecture
+
+make 
+sudo make install
+
+------ basic knowledge ------
+Each VM is a process in the host, and vCPU in the VM is a thread in the qemu process.
+
+------ Create VM ------
+qemu-img create -f qcow2 xxx.img 10G
+/* -f specifies the format of the image, and qcow2 is most commonly used by qemu;
+xxx.img is the name of the image;
+10G is the size of the image.*/
+
+qemu-system-x86_64 xxx.img
+qemu-system-x86 xxx.img
+/* start VM */
