@@ -41,7 +41,7 @@ xxx.img is the name of the image;
 qemu-system-x86_64 xxx.img
 qemu-system-x86 xxx.img
 
-This should fail because I haven't installed OS for the VM
+This should not boot because I haven't installed OS for the VM
 
 ------ create OS image ------
 Download xxx.iso
