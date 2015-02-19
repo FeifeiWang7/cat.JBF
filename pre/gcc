@@ -1,0 +1,22 @@
+gcc by step:
+1. preprocessing -->gcc -E test.c -o test.i
+2. compilation --> gcc -S test.i -o test.s
+3. assembly --> gcc -c test.s -o test.o
+4. linking --> gcc test.o -o test
+
+gcc for multiple source files:
+gcc test1.c test2.c -o test
+which actually is:
+1. gcc -c test1.c -o test1.o
+2. gcc -c test2.c -o test2.o
+3. gcc test1.o test2.o -o test
+
+gcc -pedantic test.c -o test /* for ANSI/ISO C standard */
+gcc -Wall test.c -o test /* generate as many warnings as possible */
+gcc -Werror test.c -o test /* stop compiliation when meets a warning */
+
+Header files are in /usr/include, and library files are in /usr/lib. If not, link libraries manually
+1. gcc -c -I /directory/to/header/.../include test.c -o test.o
+2. gcc -L /directory/to/lib/.../lib -lXXX test.o -o test
+DLL (.so) is preferred. To force static (.a):
+gcc -L /directory/to/lib/.../lib -static -lXXX test.o -o test
