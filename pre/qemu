@@ -12,6 +12,9 @@ sudo apt-get install autoconf
 --enalbe-werror: treat warnings as errors when compiling
 --target-list: choose target architecture for faster compilation because by default, it compiles all architecture
 
+From the configuration, if SDL is not supported, install it, otherwise I will stuck at "VNC server running on `127.0.0.1:5900'"... 
+sudo apt-get install libsdl-dev
+
 sudo make 
 sudo make install
 
