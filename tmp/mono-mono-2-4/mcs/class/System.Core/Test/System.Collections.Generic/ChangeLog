@@ -1,0 +1,11 @@
+2008-12-17  Jb Evain  <jbevain@novell.com>
+
+	* HashSetTest.cs: add test for CopyTo.
+
+2008-05-15  Roei Erez  <roeie@mainsoft.com>
+
+	*  HashSetTest.cs: temporary exclude CopyTo in JAVAEE environment
+
+2007-11-28  Jb Evain  <jbevain@novell.com>
+
+	* HashSetTest.cs: tests for HashSet<T>.
