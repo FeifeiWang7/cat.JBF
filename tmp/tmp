@@ -1,6 +1,0 @@
-Disable some of the FastCopy fast paths since they are racy.
-
-2.4 branch or 3.99 branch
-
-The vulnerability is located in mono source code but can only be exploited (by untrusted applications) when used by Moonlight.
-
