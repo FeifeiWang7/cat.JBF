@@ -1,0 +1,22 @@
+Device Information
+
+----- Processor -----
+/proc/cpuinfo has the information about the processor(s). This file is not a real file but a representation of what the Linux kernel finds in the system. Every file in the /proc file system is a representation of the kernel's information and every time you read it it gives you the last known state.
+
+cat /proc/cpuinfo
+
+If there are multiple CPUs or multiple cores inside the system, there is going to be multiple entries - one for each CPU/core. 
+
+----- Memory -----
+/proc/meminfo has the information about the memory.
+
+free command has the current memory usage statistics including the total amount of memory the system has.
+
+----- PCI Devices -----
+lspci lists the information about PCI devices.
+lspci -k lists more informaton about which kernel drivers are already used to manage PCI devices.
+
+For example, to find out what graphical controller you have (video card), look for the "VGA compatible controller" entry.
+
+----- USB Devices -----
+lsusb shows which USB devices are attached to the system.
