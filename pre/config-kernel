@@ -7,7 +7,7 @@ make modules
 
 sudo make modules_install (copy kernel modules to /lib/modules/kernel-version)
 
-sudo make install (copy the kernel to /boot and naming it /boot/vmlinuz, copying the privious kernel to /boot/vmlinuz.old)
+sudo make install (copy the kernel to /boot and naming it /boot/vmlinuz, copying the privious kernel to /boot/vmlinuz.old, install System.map-kernel-version, config-kernel-version, vmlinuz-kernel-version to /boot directory)
 
 ----- General Setup -----
 Support for paging of anonymous memory (swap) - enable swap space on the system. When RAM is not enough, the Linux kernel will move out old pages of memory to the swap space.
