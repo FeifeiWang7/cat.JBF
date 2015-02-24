@@ -10,6 +10,8 @@ sudo make modules_install (copy kernel modules to /lib/modules/kernel-version)
 
 sudo make install (copy the kernel to /boot and naming it /boot/vmlinuz, copying the privious kernel to /boot/vmlinuz.old, install System.map-kernel-version, config-kernel-version, vmlinuz-kernel-version to /boot directory)
 
+
+
 sudo vim /etc/default/grub
 GRUB_DEFAULT=10
 #GRUB_HIDDEN_TIMEOUT=0
@@ -110,6 +112,8 @@ make oldconfig
 make
 
 choose initramfs over initrd.
+
+Initramfs is used as the first root filesystem that your machine has access to. It is used for mounting the real rootfs which has all your data. The initramfs carries the modules needed for mounting your rootfs. But you could always compile your kernel to have these modules. Then would you need the initramfs? The answer to this is “depends on your system”. Some system configurations need a user space utility to provoke the kernel to configure the devices appropriately. Eg: cryptdevices : they need to have a password from the user. This password requesting utility being a user space utility, could pose a chicken and egg problem i.e your rootfs contains the user space utilities, but the rootfs cannot come up till the user space utilities are available. In such cases, the initramfs plays a mediator in between giving a temporary rootfs which has bears the user space utilities needed for mounting the real rootfs.
 
 ----- Config the Boot Loader -----
 install GRUB
