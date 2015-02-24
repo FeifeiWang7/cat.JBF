@@ -1,0 +1,613 @@
+make menuconfig
+
+----- General Setup -----
+Support for paging of anonymous memory (swap) - enable swap space on the system. When RAM is not enough, the Linux kernel will move out old pages of memory to the swap space.
+
+System V IPC - inter process communication, allows programs to use message queues, semaphores and shared memory segments.
+
+RCU Subsystem - RCU (Read Copy Update) is a synchronisation primitive supported by the Linux kernel which offers fast access to shared resources (programming-terms) in case of a many-read and infrequent write access behaviour. If there are multiple cores or processors in the system, it is wise to enable it. Otherwise, set it to UP-kernel (UniProcessor).
+
+Kernel .config support - building in .config support allows users to obtain the configuration for a running kernel from the kernel itself. 
+	- the subselection to support /proc/config.gz is an easy-to-use interface to the kernel configuration of a running kernel: extract /proc/config.gz (for instance, zcat /proc/config.gz > /usr/src/linux/.config and you have this kernel's configuration at hand.
+
+----- Enable Loadable Module Support -----
+Enable loadble module support 
+	- enable Module unloading
+
+----- Enable the Block Layer -----
+Enable the block layer - as it is most likely want to use block devices or Linux kernel components that use functions from the block layer, e.g., SCSI or SCSI emulating devices, the ext3 file system or USB storage.
+
+IO Schedulers - controls how and when the kernel writes or reads data to/from disks. For desktop systems, CFQ scheduler is a good choice.
+
+----- Processor Type and Features -----
+Tickless System (Dynamic Ticks) - Unless you need the shortest latency possible, using dynamic ticks will ensure that timer interrupts only fire when needed.
+
+High Resolution Timer Support - Most relatively modern systems (Pentium III and higher) have high resolution timers, allowing for more precise timing. Not really mandatory, but some applications like mplayer can benefit from using hi-res timers.
+
+Symmetric multi-processing support - If you have multiple (identical) CPUs or your CPU has multiple cores, enable this.
+
+Single-depth WCHAN output - WCHAN is the abbreviation for "waiting channel" and identifies where tasks are currently waiting for. With this enabled, the calculation for the waiting channel is simplified at the expense of accuracy. Most users don't need this level of accuracy and the simplifications means less scheduling overhead.
+
+Disable bootmem code - This optimizes some complex initial memory allocation fragments within the Linux kernel.
+
+Processor family (Pentium M) - I have selected "Pentium M" here as this is my CPU type (see the /proc/cpuinfo information). You should select the processor family of your CPU here.
+
+SMT (Hyperthreading) scheduler support - This should be selected if you have a modern Pentium chip with hyperthreading support. It is not mandatory though (the kernel will run fine without it) but might improve scheduling decisions made by the kernel.
+
+HPET Timer Support - This enables support for the High Precision Event Timer, which can be seen as a time-source resource on somewhat more modern systems. Especially if you have more than 1 core/CPU, enabling this offers "cheaper" time access than without HPET Timer support.
+
+Multi-core scheduler support - Enable this if you have a CPU with multiple cores inside; it will improve the CPU scheduler performance.
+
+Preemption Model (Preemptible Kernel (Low-Latency Desktop)) - Preemption means that a priority process, even when currently in kernel mode executing a system call, can yield his CPU time to another process. The user will notice this as if his system is running somewhat more 'smoothly' as applications might react faster to user input.
+
+There are three models available:
+
+No Forced Preemption, or
+
+Voluntary Kernel Preemption, where low-priority processes can voluntarily yield CPU time, or
+
+Preemptible Kernel, where all processes can yield CPU time (as long as they're not in a critical kernel region at that moment)
+
+Machine Check / overheating reporting - MCE allows the processor to notify the kernel when problems are detected (like overheating); based on its severity, the Linux kernel can report the issue or take immediate action.
+
+Intel MCE features - This is part of the "Machine Check / overheating reporting" section, and enables Intel-specific MCE features. I enable this, as I have an Intel-based system.
+
+Memory Model (Sparse Memory) - If you have a 32-bit processor, selecting Flat Memory is what you need. CPUs with a larger address space support (like 64-bit CPUs) most likely only allow you to select "Sparse Memory" as you are not likely to have more than a few thousand terabytes of RAM ;-) When "Sparse Memory" is selected, "Sparse Memory virtual memmap" should be selected as well.
+
+MTRR (Memory Type Range Register) support - With MTRR support, applications such as the X server can control how the processor caches memory accesses, boosting performance for reads/writes to certain memory ranges.
+
+Enable seccomp to safely compute untrusted bytecode - enable this in case an application might want to use it. It has no impact if no such applications exist on the system, and if they do, you most likely want the added security measures this provides.
+
+----- Power Management and ACPI Options -----
+The power management options provide power-saving features for Linux, not only the APM / ACPI support, but also suspend-to-ram and standby support.
+
+Power Management Support - Enable this to be able to select one or more of the other power management options.
+
+Suspend to RAM and standby - If you will have moments where you temporarily leave your system but don't want to shut it down and boot it back later, you can opt to have the system suspend itself into memory - in this case, many powerconsuming devices are shut down but you don't lose any information as everything remains in memory (and memory remains powered up).
+
+Hibernation (aka 'suspend to disk') - In hibernation, all devices shut down. The current state of system (such as your memory content) is saved into your swap space. When you boot your system back, the Linux kernel will detect this in the swap space and load all information back into memory so you can continue where you left off.
+
+With suspend to disk enabled, set the default resume partition to your swap partition.
+
+ACPI (Advanced Configuration and Power Interface) Support - Within this section you can configure several aspects of the ACPI support. Enabling ACPI can be of great help to reduce power consumption as it is a powerful technology. Sadly, not every device follows the ACPI guidelines strictly. You will find topics on the internet where boot failures or network irregularities can be solved by disabling a part of the ACPI support inside Linux.
+
+Within the ACPI configuration you should select the components for which you want support. On regular desktops, you most likely don't have a battery so support for that (and AC Adapters) won't be necessary.
+
+I select a few "deprecated" settings as I know the reporting tools I use (for battery status etc.) still rely on these files, directories and events to function correctly.
+
+CPU Frequency Scaling - If you own a laptop you'll most likely want to enable CPU Frequency scaling as it will slow down the CPU speed (and the power consumption with it) when the CPU isn't used.
+
+In the above, only the "performance" governor is selected, as the laptop will always be used as a workstation. However, you definitely want to enable additional governors for other purposes as well. A governor can be seen as a policy when and how the CPU frequency needs to be changed.
+
+----- Bus options (PCI etc.) -----
+A bus is a physical connection between several devices. The most popular bus technology within a computer nowadays is PCI (or PCI Express) but a few other bus technologies exist (for instance PCMCIA).
+
+In the above example I only selected PCI, mmconfig PCI config space access and PCI-X support; laptop users will most likely enable PCCard support as well. Within the submenu of the PCCard configuration you will be asked to select the supporting bridge. A bridge is a component that links one bus technology with another. A PCMCIA bridge allows PCMCIA devices to connect to your system. Most systems with PCMCIA support have a CardBus yenta-compatible bridge.
+
+----- Executable File Formats/Emulations -----
+Within this section you can select what binaries (format for executable files with machine instructions inside) Linux should support.
+
+The binary format used by Linux is ELF. Very old Linux systems and a couple of BSD operating systems use a.out binaries but it isn't necessary to include support for those any more. If you are configuring for a 64-bit system, definitely enable IA32 Emulation. You'll need it. Trust me.
+
+----- Networking -----
+Inside the networking configuration tab you configure the various aspects related to your network.
+
+Within the 'Networking options', you will need to enable support for the networking technologies (not hardware) you want to support.
+
+Packet socket - This allows programs to interface with the network devices immediately (without going through the network protocol implementation on the Linux kernel). It is required by tools such as tcpdump / wireshark (popular network analysing tools). You don't need to enable this, but I often perform network analysis myself so I need to have this enabled.
+
+Unix domain sockets - Sockets are a standard mechanism in Unix for processes to communicate with each other. This is an important setting that you must leave on.
+
+TCP/IP networking - Although you don't have to select any of the subfeatures that are shown when you enable this, TCP/IP networking support is definitely a must-have.
+
+Network packet filtering framework (Netfilter) - Enable this if you are planning on configuring a firewall on your system or have your system act as a gateway for others. Enable the 'IP tables support' found under 'IP: Netfilter Configuration' and select all.
+
+Users of a wireless network card will, under 'Networking', also select the Wireless configuration.
+
+I've selected these options because IEEE 802.11 is the standard for wireless networking:
+
+cfg80211 - wireless configuration API
+
+You need to enable this if you have a wireless card
+
+enable powersave by default
+
+Enables powersaving features of the wireless cards - definitely a must-have if you have wireless on a laptop as this reduces power consumption dramatically.
+
+----- Device Drivers -----
+Within this section you can configure support for the various devices in your system. It is with this configuration that the output of the lspci command (and other system information) is needed. The next example is merely that - an example. As this is very specific to your system, it is not possible to provide a general example that suits everybody. For completeness sake, I'll give the configuration for my own system with the motivation of the selection of each item.
+
+Blcok devices - devices to access data in blocks. 
+Enable loopback device support - allows to mount images (files) just like they were devices.
+
+SCSI device support - for system that has SCSI or SATA (Serial ATA)
+Enable ATA ACPI Support
+Enable Intel ESB, ICH, PIIX3, PIIX4 PATA/SATA support
+
+Network device support 
+
+Dummy net driver support - This driver allows me to create an interface which takes on all packets and just ignores them. This seems to be a weird driver, but it can come in handy from time to time. Also, this has no impact on my kernel size so I don't mind enabling this for the few times I actually use it.
+
+Ethernet (1000 Mbit) - I have a Realtek 8169 ethernet card (which is a 1Gbit network card) as mentioned by lspci | grep Ethernet
+
+Wireless LAN - As my system is a laptop with onboard wireless network card, I need to enable WLAN support as well.
+
+Wireless LAN (IEEE 802.11)
+
+The network card I have is an 802.11-something so I need to enable this.
+
+Intel PRO/Wireless 2200BG and 2915ABG Network Connection
+
+lspci says that my wireless card is an Intel PRO/Wireless 2200BG one, so I need to enable support for it:
+
+Enable promiscuous mode
+
+I need promiscuous mode when I want to analyse the wireless network I work on.
+
+Input device support
+Input devices are the devices you know to interact with your system, such as a keyboard and a mouse.
+
+-*- Generic input layer (needed for keyboard, mouse, ...)
+< >   Support for memoryless force-feedback devices
+< >   Polled input device skeleton
+< >   Sparse keymap support library
+      *** Userland interfaces ***
+-*-   Mouse interface
+[*]     Provide legacy /dev/psaux device
+(1024)  Horizontal screen resolution
+(768)   Vertical screen resolution
+< >   Joystick interface
+<*>   Event interface
+< >   Event debugging
+      ** Input Device Drivers ***
+-*-   Keyboards --->
+[*]   Mice --->
+[ ]   Joysticks/Gamepads --->
+[ ]   Tables --->
+[ ]   Touchscreens --->
+[ ]   Miscellaneous devices --->
+    Hardware I/O ports --->
+Generic input layer (needed for keyboard, mouse, ...)
+
+As the title says already, I need this for keyboard/mouse support
+
+Mouse interface
+
+Enable mouse support
+
+Horizontal screen resolution / Vertical screen resolution
+
+Actually, this setting is ignored as it is only really used if your pointing device is a digitizer or tablet rather than a simple mouse.
+
+Event interface
+
+This enables evdev support, which is somewhat mandatory if you want to work with graphical interfaces (for instance, the xorg configuration requires this).
+
+Keyboards
+
+Keyboard support is automatically selected, but in the subconfiguration you don't need to select anything unless you have a very special keyboard.
+
+Mice
+
+Within the mouse configuration, I enable 'PS/2 mouse' as my mouse is a PS/2 one.
+
+Hardware I/O ports
+
+Inside this configuration section, 'Serial I/O support' should be automatically selected as it is used by the keyboard/mice support.
+
+Character devices
+Character devices are devices that are accessed character per character. An example of a character device is a terminal.
+
+-*- Virtual terminal
+[ ]   Support for binding and unbinding console drivers
+[ ] /dev/kmem virtual device support
+[ ] Non-standard serial port support
+< > HSDPA Broadband Wireless Data Card - Globe Trotter
+    Serial drivers --->
+-*- Unix98 PTY support
+[ ]   Support multiple instances of devpts
+[*] Legacy (BSD) PTY support
+(256) Maximum number of legacy PTY in use
+< > IPMI top-level message handler --->
+<*> Hardware Random Number Generator Core support
+< >   Timer IOMEM HW Random Number Generator support
+<*>   Intel HW Random Number Generator support
+< >   AMD HW Random Number Generator support
+< >   AMD Geode HW Random Number Generator support
+< >   VIA HW Random Number Generator support
+< > /dev/nvram support
+< > Enhanced Real Time Clock Support (Legacy PC RTC driver)
+< > Generic /dev/rtc emulation
+< > Siemens R3964 line discipline
+< > Applicom intelligent fieldbus card support
+< > ACP Modem (Mwave) support
+< > NatSemi PC8736x GPIO Support
+< > NatSemi Base GPIO Support
+< > AMD CS5535/CS5536 GPIO (Geode Companion Device)
+< > RAW driver (/dev/raw/rawN)
+[ ] HPET - High Precision Event Timer
+< > Hangcheck timer
+< > TPM Hardware Support --->
+< > Telecom clock driver for ATCA SBC
+Virtual terminal
+
+Support for virtual terminals is automatically selected. You need it as you'll work with virtual consoles all the time in Linux: if you're opening a terminal window, you're working in a virtual console.
+
+Unix98 PTY Support
+
+This should be automatically selected; it is the support for virtual PTYs which you definitely need.
+
+Legacy (BSD) PTY support
+
+Enables support for virtual PTYs, but then a different kind. Although not selecting this option won't break your kernel, you'll most likely get a few (cosmetic) errors every time you open a terminal. So better enable this.
+
+Hardware Random Number Generator Core support
+
+To have support for the hardware random number generator, select this and the specific generator in the next list.
+
+Intel HW Random Number Generator support
+
+My generator provider is an Intel one (as my CPU is an Intel CPU).
+
+Graphics support
+Graphical card support is configured here as well as framebuffer support (allowing applications to access the graphics hardware through a well-defined interface).
+
+<*> /dev/agpgart (AGP Support) --->
+-*- VGA Arbitration
+(2)   Maximum number of GPUs
+[ ] Laptop Hybrid Graphics - GPU switching support
+<M> Direct Rendering Manager (XFree86 4.1.0 and higher DRI support) --->
+{M} Lowlevel video output switch controls
+{*} Support for frame buffer devices --->
+< > CyberPro 2000/2010/5000 support
+< > Arc Monochrome LCD board support
+[ ] Asiliant (Chips) 6900 display support
+[ ] IMS Twin Turbo display support
+< > VGA 16-color graphics support
+[*] VESA VGA graphics support
+< > N411 Apollo/Hecuba devkit support
+< > Hercules mono graphics support
+...
+[ ] Backlight & LCD device support --->
+    Display device support --->
+    Console display driver support --->
+[ ] Bootup logo --->
+/dev/agpgart (AGP Support)
+
+I know my laptop has an on-board AGP card. lspci tells me what card it is:
+
+# lspci | grep VGA
+00:02.0 VGA compatible controller: Intel Corporation Mobile
+        915GM/GMS/910GML Express Graphics Controller (rev 03)
+As such, I also enable 'Intel 440LX/BX/GX, I8xx and E7x05 chip set support'. You might believe that I am in error because the title doesn't mention 915GM (as shown in lspci's output) but if I read the help for the option, I read that I915 is supported through this driver as well.
+
+Direct Rendering Manager (XFree86 4.1.0 and higer DRI support)
+
+DRM is needed by XFree86 to improve graphic performance (including 3D support). Within the subconfiguration, I enable drivers for my Intel graphical card:
+
+--- Direct Rendering Manager (XFree86 4.1.0 and higher DRI support)
+< >   3dfx Banshee/Voodoo3+
+      ...
+<M>   Intel 830M, 845G, 852GM, 855GM, 865G
+< >     i830 driver
+<M>     i915 driver
+< >   Matrox g200/g400
+      ...
+Support for frame buffer devices
+
+I want frame buffer support because that allows me to display more characters than just 80x25 when working in the command-line mode (console). In the subconfiguration, I enable 'VESA VGA graphics support' which enables standard VESA support for framebuffer access.
+
+Console display driver support
+
+Within the console display driver support, I enable framebuffer support for the console:
+
+-*- VGA test console
+[ ]   Enable Scrollback Buffer in System RAM
+{*} Framebuffer Console support
+[ ]   Map the console to the primary display device
+[ ]   Framebuffer Console Rotation
+[ ] Select compiled-in fonts
+Sound
+To support my sound card, I enable sound card support and the sound system I want to use.
+
+<*> Sound card support
+[ ]   Preclaim OSS device numbers
+<*>   Advanced Linux Sound Architecture --->
+< >   Open Sound System (DEPRECATED) --->
+ALSA (Advanced Linux Sound Architecture) is the latest sound system supported by Linux. OSS is deprecated and ALSA provides OSS compatibility for those applications that still require OSS.
+
+<*> Advanced Linux Sound Architecture
+<*>   Sequencer support
+< >     Sequencer dummy client
+< >   OSS Mixer API
+< >   OSS PCM (digital audio) API
+[ ]   OSS Sequencer API
+[ ]   Dynamic device file minor numbers
+[ ]   Support old ALSA API
+[ ]   Verbose procfs contents
+[ ]   Verbose printk
+[ ]   Debug
+[ ]   Generic sound devices --->
+[*]   PCI sound devices --->
+[ ]   USB devices --->
+< >   ALSA for SoC audio support --->
+PCI sound devices
+
+Under the PCI devices, select the audio card you have. Again, lspci can show you what device you have:
+
+# lspci | grep Audio
+00:1e.2 Multimedia audio controller: Intel Corporation
+        82801FB/FBM/FR/FW/FRW (ICH6 Family) AC'97 Audio
+        Controller (rev 04)
+With this information, I know that I need to select 'Intel/SiS/nVidia/AMD/ALi AC97 Controller'.
+
+HID Devices
+A HID device (Human Interface Device) is a device that takes input from the user. An important class of devices that use the HID interface are USB keyboards and mice.
+
+--- HID Devices
+-*-   Generic HID support
+[ ]     /dev/hidraw raw HID device support
+      *** USB Input Devices ***
+<*>   USB Human Interface Device (full HID) support
+[ ]   PID device support
+[ ]   /dev/hiddev raw HID device support
+      Special HID drivers --->
+USB Human Interface Device (full HID) support
+
+I select this as I often use a USB mouse on my laptop.
+
+USB support
+USB devices come in various types and classes; the USB support screen is therefore quite a large device driver configuration screen with many options.
+
+--- USB support
+<*> Support for Host-side USB
+[ ]   USB verbose debug messages
+[ ]   USB announce new devices
+      *** Miscellaneous USB options ***
+[ ]   USB device filesystem (DEPRECATED)
+[ ]   USB device class-devices (DEPRECATED)
+...
+      *** USB Host Controller Drivers ***
+< >   Cypress C67x00 HCD support
+<*>   EHCI HCD (USB 2.0) support
+< >   ISP116X HCD support
+<*>   OHCI HCD support
+<*>   UHCI HCD (most Intel and VIA) support
+< >   SL811HS HCD support
+< >   R8A66597 HCD support
+      *** USB Device Class drivers ***
+< >   USB Modem (CDC ACM) support
+<*>   USB Printer support
+    *** NOTE: USB_STORAGE enables SCSI, and 'SCSI disk support'
+    *** may also be needed; see USB_STORAGE Help for more information
+<*> USB Mass Storage support
+< >   USB Mass Storage verbose debug
+      ...
+[ ] The shared table of common (or usual) storage devices
+    *** USB Imaging devices ***
+< > Microtek X6USB scanner support
+[ ] USB Monitor
+    *** USB port drivers ***
+< > USB Serial Converter support --->
+    *** USB Miscellaneous drivers ***
+< > EMI 6|2m USB Audio interface support
+    ...
+Support for Host-side USB
+
+This enables general USB support (technology-wise)
+
+USB device filesystem
+
+With this enabled, the Linux kernel will create information files inside /proc/bus/usb about each device. This information can come in handy to debug USB device support but is also used by tools to provide more information about a USB device.
+
+EHCI HCD (USB 2.0) support
+
+There are a few standards for USB controllers. For USB 2.0 support, you need to enable EHCI HCD support.
+
+UHCI HCD (most Intel and VIA) support
+
+UHCI is Intels' interface for USB 1.0 and 1.1 support.
+
+USB Printer support
+
+As I do want to print occasionally, I need to enable USB printer support (as my printer is a USB printer).
+
+USB Mass Storage support
+
+USB Mass Storage support is needed to be able to access USB sticks, USB disks and other USB media that I want to be able to access as a remote disk. This includes most digital cameras.
+
+MMC/SD card support
+My laptop supports MMC/SD cards so I want to support this in my kernel as well.
+
+[ ] MMC debugging
+[ ] Assume MMC/SD cards are non-removable (DANGEROUS)
+    *** MMC/SD Card Drivers ***
+<M> MMC block device driver
+[*]   Use bounce buffer for simple hosts
+< > SDIO UART/GPS class support
+< > MMC host test driver
+    *** MMC/SD HOst Controller Drivers ***
+<M> Secure Digital Host Controller Interface support
+<M> SDHCI support on PCI bus
+< > Winbond W83L51xD SD/MMC Card Interface
+< > ENE CB710 MMC/SD Interface support
+< > VIA SD/MMC Card Reader Driver
+MMC block device driver
+
+This driver enables the Linux kernel to mount an MMC/SD card as a file system.
+
+Use bounce buffer for simple hosts
+
+The Linux kernel help system has informed me that this helps performance on certain controllers. Although I don't know if I really need this, I've enabled this as I was unsure, and the help says I need to say 'Y' if I am unsure.
+
+Secure Digital Host Controller Interface support
+
+Inside the help of this option it says that this enables SD controller support for controllers manufactured by Texas Instruments, Ricoh and Toshiba. lspci informs me that I have a Texas Instruments device, so I enable this:
+
+# lspci | grep SD
+06:09.4 SD Host controller: Texas Instruments
+        PCI6411/6421/6611/6621/7411/7421/7611/7621 Secure
+        Digital Controller
+File Systems
+Our next stop is file system support. A file system is the formatting structure used on a (disk)partition as we mentioned before. It is important here that you build support for the file systems in the kernel (and not as a module) as you could otherwise end up with a kernel that needs file system support to mount the file system... where your kernel modules are installed.
+
+<*> Second extended fs support
+[ ]   Ext2 extended attributes
+[ ]   Ext2 execute in place support
+<*> Ext3 journalling file system support
+[ ]   Default to 'data=ordered' in ext3
+[ ]   Ext3 extended attributes
+< > The Extended 4 (ext4) filesystem
+[ ] JDB (ext3) debugging support
+< > Reiserfs support
+< > JFS filesystem support
+< > XFS filesystem support
+< > OCFS2 file system support
+[*] Dnotify support
+[*] Inotify file change notification support
+[*]   Inotify support for userspace
+[ ] Quota support
+< > Kernel automounter support
+< > Kernel automounter version 4 support (also supports v3)
+< > FUSE (Filesystem in Userspace) support
+    Caches --->
+    CD-ROM/DVD Filesystems --->
+    DOS/FAT/NT Filesystems --->
+    Pseudo filesystems --->
+[ ] Miscellaneous filesystems --->
+[*] Network File Systems --->
+    Partition Types --->
+-*- Native language support --->
+< > Distributed Lock Manager (DLM) --->
+Second extended fs support
+
+My /boot partition uses the ext2 file system...
+
+Ext3 journalling file system support
+
+... and all other partitions I have use the ext3 file system
+
+Dnotify support
+
+Some applications might need Dnotify support (a notification system where the kernel sends a signal to a userspace application to notify it about file changes).
+
+'Inotify file change notification support' and 'Inotify support for userspace'
+
+Inotify is a better implementation of a file notification system than Dnotify and is used by various applications.
+
+CD-ROM/DVD Filesystems
+
+Within this subsection, enable 'ISO 9660 CDROM file system support' as well as 'Microsoft Joliet CDROM extensions' (to support the larger file name scheme used by Microsoft).
+
+DOS/FAT/NT Filesystems
+
+If you are never going to work on FAT/NTFS file systems, you don't need this, but I occasionally attach a FAT/NTFS formatted disk on my laptop to help people.
+
+<*> MSDOS fs support
+<*> VFAT (Windows-95) fs support
+(437) Default codepage for FAT
+(iso8859-15) Default iocharset for FAT
+<*> NTFS file system support
+[ ]   NTFS debugging support
+[ ]   NTFS write support
+You notice that I don't enable NTFS write support. This is because the in-kernel NTFS write support is very limited (thank you Microsoft for hiding how NTFS works).
+
+Pseudo filesystems
+
+Pseudo file systems are virtual file systems where the kernel maps information onto virtual files which you can read or write.
+
+-*- /proc file system support
+[*]   /proc/kcore support
+[*] Virtual memory file system support (former shm fs)
+[ ]   Tmpfs POSIX Access Control Lists
+[ ] HugeTLB file system support
+< > Userspace-driven configuration filesystem
+Apart from the /proc file system support, I also enable 'Virtual memory file system support' (also known as tmpfs) which allows you to map a portion of your virtual memory as a file system (every file you create inside a tmpfs file system is stored in memory or swap space; when unmounted, the files are lost).
+
+Tmpfs is often used for the /tmp location.
+
+Network File Systems
+
+Network file systems allow you to access files on remote sites as if they were local (rather than using tools / technologies like FTP to store or retrieve them).
+
+<*> NFS file system support
+[*]   Provide NFSv3 client support
+[ ]     Provide client support for the NFSv3 ACL protocol extension
+[ ]   Allow direct I/O on NFS files
+<*> NFS server support
+[ ]   Provide NFSv3 server support
+[*]   Provide NFS server over TCP support
+< > SMB file system support (OBSOLETE, please use CIFS)
+<*> CIFS support (advanced network filesystem, SMBFS successor)
+[ ]   CIFS statistics
+[ ]   Support legacy servers which use weaker LANMAN security
+[ ]   CIFS extended attributes
+[ ]   Enable additional CIFS debugging routines
+< > NCP file system support (to mount NetWare volumes)
+< > Code file system support (advanced network fs)
+NFS file system support
+
+I use NFS to share Gentoo's portage tree with other systems (and even virtual machines) so I need to enable NFS support
+
+Provide NFSv3 client support
+
+With this I can act as an NFS client (to mount remote NFS shares)
+
+NFS server support
+
+With this I can act as an NFS server (to provide remote NFS shares)
+
+Provide NFS server over TCP support
+
+Enable NFS servers with TCP support; the Linux kernel help system tells me that this is interesting when the network is lossy or congested. As I'm using a wireless network, this seems to be a good choice.
+
+CIFS support
+
+CIFS enables support for mounting SAMBA shares as well as Windows shares (and authenticate my own system on a Windows network).
+
+Cryptographic API
+Some kernel subsystems require in-kernel cryptographic algorithm support. The algorithms that are needed will be automatically selected, so you don't have to configure anything here.
+
+make -j4 (4 is the number of cores available on the system)
+
+make modules_install (copy kernel modules to /lib/modules/kernel-version)
+
+make install (copy the kernel to /boot and naming it /boot/vmlinuz, copying the privious kernel to /boot/vmlinuz.old)
+
+----- Rebuilding the kernel -----
+when want to upgrade the kernel, there is no need to config it again.
+
+cd /usr/src/linux
+
+Load current kernel configuration
+
+zcat /proc/config.gz > .config
+
+make oldconfig
+
+make
+
+choose initramfs over initrd.
+
+----- Config the Boot Loader -----
+install GRUB
+
+emerge grub
+
+install GRUB onto the MBR so that GRUB can automatically start after the BIOS POST processing (Power On Self Test)
+
+grub-install /dev/sda
+
+or 
+
+grub-install -f /dev/sda
+
+configuring GRUB
+
+nano -w /etc/default/grub
+
+check if linux images are detected
+
+grub2-mkconfig -o /boot/grub2/grub.cfg
+
+
