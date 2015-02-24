@@ -1,4 +1,5 @@
-make menuconfig
+`sudo apt-get install libncurses5-dev`
+`make menuconfig`
 
 ----- General Setup -----
 Support for paging of anonymous memory (swap) - enable swap space on the system. When RAM is not enough, the Linux kernel will move out old pages of memory to the swap space.
