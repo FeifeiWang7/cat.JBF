@@ -1,0 +1,31 @@
+List all users:
+
+cut -d: -f1 /etc/passwd
+
+Add a new user:
+
+sudo adduser new_username
+
+Remove a user:
+
+sudo userdel -r username
+
+Delete home directory for the deleted user account:
+
+sudo rm -r /home/username
+
+Change the username of a user:
+
+usermod -l new_username old_username
+
+Change the password for a user:
+
+sudo passwd username
+
+Change the shell for a user:
+
+sudo chsh username
+
+Change the details for a user (for example real name):
+
+sudo chfn username
