@@ -10,7 +10,7 @@ sudo make modules_install (copy kernel modules to /lib/modules/kernel-version)
 
 sudo make install (copy the kernel to /boot and naming it /boot/vmlinuz, copying the privious kernel to /boot/vmlinuz.old, install System.map-kernel-version, config-kernel-version, vmlinuz-kernel-version to /boot directory)
 
-
+sudo update-initramfs -c -k kernel-version (create initramfs for a specific kernel, -c create, -k specify version)
 
 sudo vim /etc/default/grub
 GRUB_DEFAULT=10
