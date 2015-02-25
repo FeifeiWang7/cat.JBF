@@ -1,4 +1,4 @@
-sudo apt-get install build-essential libncurses5-dev
+sudo apt-get install build-essential libncurses5 libncurses5-dev
 
 make menuconfig
 
