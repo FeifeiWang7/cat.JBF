@@ -56,6 +56,10 @@ If it reports an error that device is busy, it means that either virtualbox or v
 ------ start VM ------
 qemu-system-x86_64 -m 2048 -enable-kvm experiment.img
 
+with multiple cores
+
+qemu-system-x86_64 -m 2048 -smp 4 -enable-kvm experiment.img
+
 ------ want graphical interface? ------
 install virt-manager
 sudo virt-manager
