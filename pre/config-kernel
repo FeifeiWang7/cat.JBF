@@ -98,6 +98,9 @@ Ethernet (1000 Mbit) - I have a Realtek 8169 ethernet card (which is a 1Gbit net
 Wireless LAN - As my system is a laptop with onboard wireless network card, I need to enable WLAN support as well.
 Wireless LAN (IEEE 802.11)
 
+----- Other Config -----
+CONFIG_SLUB setting can easily share the objects which is the same size and other purpose.
+
 ----- Rebuilding the kernel -----
 when want to upgrade the kernel, there is no need to config it again.
 
@@ -114,26 +117,4 @@ make
 choose initramfs over initrd.
 
 Initramfs is used as the first root filesystem that your machine has access to. It is used for mounting the real rootfs which has all your data. The initramfs carries the modules needed for mounting your rootfs. But you could always compile your kernel to have these modules. Then would you need the initramfs? The answer to this is “depends on your system”. Some system configurations need a user space utility to provoke the kernel to configure the devices appropriately. Eg: cryptdevices : they need to have a password from the user. This password requesting utility being a user space utility, could pose a chicken and egg problem i.e your rootfs contains the user space utilities, but the rootfs cannot come up till the user space utilities are available. In such cases, the initramfs plays a mediator in between giving a temporary rootfs which has bears the user space utilities needed for mounting the real rootfs.
-
------ Config the Boot Loader -----
-install GRUB
-
-emerge grub
-
-install GRUB onto the MBR so that GRUB can automatically start after the BIOS POST processing (Power On Self Test)
-
-grub-install /dev/sda
-
-or 
-
-grub-install -f /dev/sda
-
-configuring GRUB
-
-nano -w /etc/default/grub
-
-check if linux images are detected
-
-grub2-mkconfig -o /boot/grub2/grub.cfg
-
 
