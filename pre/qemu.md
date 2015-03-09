@@ -44,9 +44,7 @@ Mirror is like the disk of VM, so I need to create mirror before starts VM
     qemu-img create -f qcow2 xxx.img 10G
     
 /* -f specifies the format of the image, and qcow2 is most commonly used by qemu;
-  
-    xxx.img is the name of the image;
-
+xxx.img is the name of the image;
 10G is the size of the image.*/
 
 ### start VM ------
