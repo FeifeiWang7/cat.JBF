@@ -1,10 +1,13 @@
 ### install qemu------
 If encountering "ERROR: glib-2.12 gthread-2.0 is required to compile QEMU":
-  sudo apt-get install libglib2.0-dev zlib1g-dev
-To use the autogen script:
-  sudo apt-get install autoconf
 
-  ./configure --enable-kvm --enable-debug --enable-vnc --enable-werror --target-list="x86_64-softmmu"
+    sudo apt-get install libglib2.0-dev zlib1g-dev
+
+To use the autogen script:
+    
+    sudo apt-get install autoconf
+    
+    ./configure --enable-kvm --enable-debug --enable-vnc --enable-werror --target-list="x86_64-softmmu"
 
 - configure is used to generate Makefile, for more information, use ./configure --help
 --enable-kvm: compile KVM modul, so that QEMU can use KVM to access hardware virtualization
