@@ -10,9 +10,13 @@ To use the autogen script:
     ./configure --enable-kvm --enable-debug --enable-vnc --enable-werror --target-list="x86_64-softmmu"
 
 - configure is used to generate Makefile, for more information, use ./configure --help
+
 --enable-kvm: compile KVM modul, so that QEMU can use KVM to access hardware virtualization
+
 --enable-vnc: enable vnc
+
 --enalbe-werror: treat warnings as errors when compiling
+
 --target-list: choose target architecture for faster compilation because by default, it compiles all architecture
 
 From the configuration, if SDL is not supported, install it, otherwise I will stuck at "VNC server running on `127.0.0.1:5900'"... 
