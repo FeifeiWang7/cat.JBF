@@ -1,16 +1,16 @@
-sudo apt-get install build-essential libncurses5 libncurses5-dev
+	sudo apt-get install build-essential libncurses5 libncurses5-dev
 
-make menuconfig
+	make menuconfig
 
-make -j4 (4 is the number of cores available on the system)
+	make -j4 (4 is the number of cores available on the system)
 
-make modules
+	make modules
 
-sudo make modules_install (copy kernel modules to /lib/modules/kernel-version)
+	sudo make modules_install (copy kernel modules to /lib/modules/kernel-version)
 
-sudo make install (copy the kernel to /boot and naming it /boot/vmlinuz, copying the privious kernel to /boot/vmlinuz.old, install System.map-kernel-version, config-kernel-version, vmlinuz-kernel-version to /boot directory)
+	sudo make install (copy the kernel to /boot and naming it /boot/vmlinuz, copying the privious kernel to /boot/vmlinuz.old, install System.map-kernel-version, config-kernel-version, vmlinuz-kernel-version to /boot directory)
 
-sudo update-initramfs -c -k kernel-version (create initramfs for a specific kernel, -c create, -k specify version)
+	sudo update-initramfs -c -k kernel-version (create initramfs for a specific kernel, -c create, -k specify version)
 
 sudo vim /etc/default/grub
 GRUB_DEFAULT=10
@@ -18,7 +18,7 @@ GRUB_DEFAULT=10
 #GRUB_HIDDEN_TIMEOUT_QUIET=true
 GRUB_TIMEOUT=20
 
-sudo update-grub2
+	sudo update-grub2
 
 ----- General Setup -----
 Support for paging of anonymous memory (swap) - enable swap space on the system. When RAM is not enough, the Linux kernel will move out old pages of memory to the swap space.
