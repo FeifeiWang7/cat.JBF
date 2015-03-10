@@ -123,11 +123,15 @@ cd /usr/src/linux
 
 Load current kernel configuration
 
+	/boot/config-$(uname -r)
+
+or 
+
 zcat /proc/config.gz > .config
 
-make oldconfig
+	make oldconfig
 
-make
+	make
 
 choose initramfs over initrd.
 
