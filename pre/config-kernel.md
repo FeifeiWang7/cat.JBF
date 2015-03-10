@@ -1,3 +1,5 @@
+### Compile Kernel
+
 	sudo apt-get install build-essential libncurses5 libncurses5-dev
 
 	make menuconfig
@@ -28,6 +30,8 @@ Create initramfs for a specific kernel, -c create, -k specify version
 
 	sudo update-grub2
 
+#### Meaning of .config
+
 - General Setup -----
 Support for paging of anonymous memory (swap) - enable swap space on the system. When RAM is not enough, the Linux kernel will move out old pages of memory to the swap space.
 System V IPC - inter process communication, allows programs to use message queues, semaphores and shared memory segments.
@@ -35,15 +39,15 @@ RCU Subsystem - RCU (Read Copy Update) is a synchronisation primitive supported 
 Kernel .config support - building in .config support allows users to obtain the configuration for a running kernel from the kernel itself. 
 	Enable access to .config through /proc/config.gz - the subselection to support /proc/config.gz is an easy-to-use interface to the kernel configuration of a running kernel: extract /proc/config.gz (for instance, zcat /proc/config.gz > /usr/src/linux/.config and you have this kernel's configuration at hand.
 
------ Enable Loadable Module Support -----
+- Enable Loadable Module Support -----
 Enable loadble module support
 	Module unloading
 
------ Enable the Block Layer -----
+- Enable the Block Layer -----
 Enable the block layer - use block devices or Linux kernel components that use functions from the block layer, e.g., SCSI or SCSI emulating devices, the ext3 file system or USB storage.
 	IO Schedulers - controls how and when the kernel writes or reads data to/from disks. For desktop systems, CFQ scheduler is a good choice.
 
------ Processor Type and Features -----
+- Processor Type and Features -----
 Tickless System (Dynamic Ticks) - Unless you need the shortest latency possible, using dynamic ticks will ensure that timer interrupts only fire when needed.
 High Resolution Timer Support - Most relatively modern systems (Pentium III and higher) have high resolution timers, allowing for more precise timing. Not really mandatory, but some applications like mplayer can benefit from using hi-res timers.
 Symmetric multi-processing support - If you have multiple (identical) CPUs or your CPU has multiple cores, enable this.
@@ -63,7 +67,7 @@ Memory Model (Sparse Memory) - If you have a 32-bit processor, selecting Flat Me
 MTRR (Memory Type Range Register) support - With MTRR support, applications such as the X server can control how the processor caches memory accesses, boosting performance for reads/writes to certain memory ranges.
 Enable seccomp to safely compute untrusted bytecode - enable this in case an application might want to use it. It has no impact if no such applications exist on the system, and if they do, you most likely want the added security measures this provides.
 
------ Power Management and ACPI Options -----
+- Power Management and ACPI Options -----
 The power management options provide power-saving features for Linux, not only the APM / ACPI support, but also suspend-to-ram and standby support.
 
 Power Management Support - Enable this to be able to select one or more of the other power management options.
@@ -74,15 +78,15 @@ ACPI (Advanced Configuration and Power Interface) Support - Within this section 
 	Within the ACPI configuration you should select the components for which you want support. On regular desktops, you most likely don't have a battery so support for that (and AC Adapters) won't be necessary.
 CPU Frequency Scaling - If you own a laptop you'll most likely want to enable CPU Frequency scaling as it will slow down the CPU speed (and the power consumption with it) when the CPU isn't used.
 
------ Bus options (PCI etc.) -----
+- Bus options (PCI etc.) -----
 A bus is a physical connection between several devices. The most popular bus technology within a computer nowadays is PCI (or PCI Express) but a few other bus technologies exist (for instance PCMCIA).
 
------ Executable File Formats/Emulations -----
+- Executable File Formats/Emulations -----
 Select what binaries (format for executable files with machine instructions inside) Linux should support.
 
 The binary format used by Linux is ELF. Very old Linux systems and a couple of BSD operating systems use a.out binaries but it isn't necessary to include support for those any more. If you are configuring for a 64-bit system, definitely enable IA32 Emulation.
 
------ Networking -----
+- Networking -----
 Within the 'Networking options', you will need to enable support for the networking technologies (not hardware) you want to support.
 
 Packet socket - This allows programs to interface with the network devices immediately (without going through the network protocol implementation on the Linux kernel). It is required by tools such as tcpdump / wireshark (popular network analysing tools). You don't need to enable this, but I often perform network analysis myself so I need to have this enabled.
@@ -94,7 +98,7 @@ I've selected these options because IEEE 802.11 is the standard for wireless net
 	cfg80211 - wireless configuration API You need to enable this if you have a wireless card
 	enable powersave by default - enables powersaving features of the wireless cards - definitely a must-have if you have wireless on a laptop as this reduces power consumption dramatically.
 
------ Device Drivers -----
+- Device Drivers -----
 Blcok devices - devices to access data in blocks. 
 	Enable loopback device support - allows to mount images (files) just like they were devices.
 SCSI device support - for system that has SCSI or SATA (Serial ATA)
@@ -106,10 +110,13 @@ Ethernet (1000 Mbit) - I have a Realtek 8169 ethernet card (which is a 1Gbit net
 Wireless LAN - As my system is a laptop with onboard wireless network card, I need to enable WLAN support as well.
 Wireless LAN (IEEE 802.11)
 
------ Other Config -----
+- Other Config -----
 CONFIG_SLUB setting can easily share the objects which is the same size and other purpose.
 
------ Rebuilding the kernel -----
+### Use old config
+
+Rebuilding the kernel
+
 when want to upgrade the kernel, there is no need to config it again.
 
 cd /usr/src/linux
