@@ -28,7 +28,7 @@ Create initramfs for a specific kernel, -c create, -k specify version
 
 	sudo update-grub2
 
------ General Setup -----
+-General Setup -----
 Support for paging of anonymous memory (swap) - enable swap space on the system. When RAM is not enough, the Linux kernel will move out old pages of memory to the swap space.
 System V IPC - inter process communication, allows programs to use message queues, semaphores and shared memory segments.
 RCU Subsystem - RCU (Read Copy Update) is a synchronisation primitive supported by the Linux kernel which offers fast access to shared resources (programming-terms) in case of a many-read and infrequent write access behaviour. If there are multiple cores or processors in the system, it is wise to enable it. Otherwise, set it to UP-kernel (UniProcessor).
