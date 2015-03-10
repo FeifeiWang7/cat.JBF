@@ -2,21 +2,29 @@
 
 	make menuconfig
 
-	make -j4 (4 is the number of cores available on the system)
+	make -j4 
+
+4 is the number of cores available on the system
 
 	make modules
 
-	sudo make modules_install (copy kernel modules to /lib/modules/kernel-version)
+	sudo make modules_install
 
-	sudo make install (copy the kernel to /boot and naming it /boot/vmlinuz, copying the privious kernel to /boot/vmlinuz.old, install System.map-kernel-version, config-kernel-version, vmlinuz-kernel-version to /boot directory)
+Copy kernel modules to /lib/modules/kernel-version
 
-	sudo update-initramfs -c -k kernel-version (create initramfs for a specific kernel, -c create, -k specify version)
+	sudo make install
 
-sudo vim /etc/default/grub
-GRUB_DEFAULT=10
-#GRUB_HIDDEN_TIMEOUT=0
-#GRUB_HIDDEN_TIMEOUT_QUIET=true
-GRUB_TIMEOUT=20
+Copy the kernel to /boot and naming it /boot/vmlinuz, copying the privious kernel to /boot/vmlinuz.old, install System.map-kernel-version, config-kernel-version, vmlinuz-kernel-version to /boot directory
+
+	sudo update-initramfs -c -k kernel-version 
+
+Create initramfs for a specific kernel, -c create, -k specify version
+
+	sudo vim /etc/default/grub
+	GRUB_DEFAULT=10
+	#GRUB_HIDDEN_TIMEOUT=0
+	#GRUB_HIDDEN_TIMEOUT_QUIET=true
+	GRUB_TIMEOUT=20
 
 	sudo update-grub2
 
