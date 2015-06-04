@@ -1,16 +1,25 @@
-int string_to_int(char num[])
-{
-        //consider integer overflow. Below assume 32-bit integer
-        if((num[0] == '-') && (strlen(num) == strlen("-2147483648")) && (strcmp (num, "-2147483648") > 0)) return 0;
-        else if( (strlen(num) == strlen("2147483647")) && (strcmp(num, "2147483647") > 0)) return 0;
-        int len = strlen(num);
+int myAtoi(char* num) {
+        char *p = num;
+        while((*p == ' ') || (*p == '\t') || (*p == '\n')) p++;
         int result = 0;
-        int i = 0;
-        if(num[0] == '-') i = 1;
-        for(; i < len; i ++)
+        int positive = 1;
+        if( *p == '-')
         {
-                result = result * 10 + (num[i] - '0');
+                positive = 0;
+                p++;
         }
-        if(num[0] == '-') result = -result;
-        return result;
+        else if( *p == '+')
+        {
+                positive = 1;
+                p++;
+        }
+        while(*p >= '0' && *p <= '9')
+        {
+//              if((tmp >> 31 != result >> 31) || (tmp + '0' - *p)/10 != result)
+                if(result > (INT_MAX - *p + '0')/10)
+                        return positive?2147483647:-2147483648;
+                result = result * 10 + *p - '0';
+                p++;
+        }
+        return positive?result:-result;
 }
