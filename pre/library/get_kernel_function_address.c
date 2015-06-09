@@ -1,3 +1,8 @@
+/* expose the addresses benefit attackers, so by default a protection set all addresses to 0.
+   To close the protection:
+        echo 0 > /proc/sys/kernel/kptr_restrict
+*/
+
 unsigned long get_symbol(char *name) //get kernel function address
 {
         FILE *f;
