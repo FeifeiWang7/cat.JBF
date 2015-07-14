@@ -23,7 +23,7 @@ For current shell (bash)
 
     export  xxx=yyy
 
-#### 
+#### Other
 
 Show environment variable xxx
 
