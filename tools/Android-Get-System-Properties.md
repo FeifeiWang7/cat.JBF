@@ -1,1 +1,0 @@
-    getprop | grep platform   
