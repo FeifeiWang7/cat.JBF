@@ -20,14 +20,15 @@ int *reverseArray(int *digits, int digitsSize)
 #define INT_MAX 2147483647
 #define INT_MIN -2147483648
 int reverseInteger(int x) {
-    long long out=0;
-    int sign = x >= 0 ? 1:-1;
-    x=abs(x);
-    while(x>0){
+    int out=0;
+    //int sign = x >= 0 ? 1:-1;
+    //x=abs(x);
+    while(x != 0)
+    {
+        if(out > INT_MAX/10 || out < INT_MIN/10) return 0;
         out = out * 10 + x % 10;
-        if(out > INT_MAX || out*sign < INT_MIN)
-            return 0;
         x /= 10;
     }
-    return out*sign;
+    //return out*sign;
+    return out;
 }
