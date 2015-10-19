@@ -1,3 +1,23 @@
+/* a1 < a2 < ... < an */
+
+int *InsertionSort(int a[], int len) // On2, inplace
+{
+        /* insert a[i] into the sorted array a[0...i-1]  */
+        int i, j, key;
+        for(j = 0; j < len; j++)
+        {
+                key = a[j];
+                i = j - 1;
+                while((i >= 0) && (a[i] > key))
+                {
+                        a[i+1] = a[i];
+                        i--;
+                }
+                a[i+1] = key;
+        }
+        return a;
+}
+
 int QuickSort(int a[], int left, int right)
 {
     if (left < right)
