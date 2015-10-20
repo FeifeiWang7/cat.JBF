@@ -17,7 +17,7 @@ int *InsertionSort(int a[], int len) // On2, inplace
         }
         return a;
 }
-
+////////
 void Merge(int a[], int low, int mid, int high)
 {
         int n1 = mid-low+1;
@@ -47,7 +47,38 @@ int *MergeSort(int a[], int low, int high) // nlgn, not in place
         }
         return a;
 }
-
+//////
+void max_heapify(int a[], int len, int i)
+{
+        int largest = i, left = 2*i, right = 2*i + 1, tmp;
+        if((left < len) && (a[left] > a[largest])) largest = left;
+        if((right < len) && (a[right] > a[largest])) largest = right;
+        if(i != largest)
+        {
+                tmp = a[largest];
+                a[largest] = a[i];
+                a[i] = tmp;
+                max_heapify(a, len, largest);
+        }
+}
+void build_max_heap(int a[], int len)
+{
+        for(int i = len/2; i >= 0; i--) max_heapify(a, len, i);
+}
+int *HeapSort(int a[], int len) //nlgn, in place
+{
+        build_max_heap(a, len);
+        int i, tmp;
+        for(i = len-1; i>0; i--)
+        {
+                tmp = a[0];
+                a[0] = a[i];
+                a[i] = tmp;
+                max_heapify(a, i, 0);
+        }
+        return a;
+}
+///////
 int QuickSort(int a[], int left, int right)
 {
     if (left < right)
