@@ -79,7 +79,7 @@ int *HeapSort(int a[], int len) //nlgn, in place
         return a;
 }
 ///////
-int QuickSort(int a[], int left, int right)
+int *QuickSort(int a[], int left, int right) //nlgn ~ n^2, in place
 {
     if (left < right)
     {
@@ -101,4 +101,5 @@ int QuickSort(int a[], int left, int right)
         QuickSort(a, left, i - 1);
         QuickSort(a, i + 1, right);
     }
+    return a;
 }
