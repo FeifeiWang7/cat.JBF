@@ -1,3 +1,5 @@
+objdump -s -d a.out
+
 objdump -Dl -Sl a.out
 
 #### AT&T Addressing
