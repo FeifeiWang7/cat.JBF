@@ -20,7 +20,7 @@ void HashAdd(hashEntryT **hashMap, hashKeyT key, hashValueT value)
 	{
 		s = (hashEntryT *)malloc(sizeof(hashEntryT));
 		s -> key = key;
-		HASH_ADD(hh, *hashMap, key, sizeof(hashKeyT), s);
+		HASH_ADD(hh, *hashMap, key, sizeof(hashKeyT), s); //key here is the field name in the struct, so must be key, not anything else
 	}
 	memcpy(&(s -> value), &value, sizeof(hashValueT));
 }
