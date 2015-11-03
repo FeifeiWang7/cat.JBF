@@ -1,6 +1,6 @@
-####
+#### Compile
 
-gcc -o go go.c -lpthread
+gcc -o x x.c -lpthread
 
 or
 
@@ -10,7 +10,7 @@ gcc x.o -o x -lpthread
 or
 
 gcc -pthread -c x.c  
-gcc x.o -ox -pthread  
+gcc x.o -o x -pthread  
 
 -pthread is equal to 
 
