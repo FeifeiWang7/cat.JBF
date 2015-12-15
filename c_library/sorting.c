@@ -1,5 +1,9 @@
 /* a1 < a2 < ... < an */
-
+/*
+        insertion       merge   heapsort        quicksort
+        n^2             nlgn    nlgn            worst n^2 average nlgn
+        in place        not     in place        in place
+*/
 int *InsertionSort(int a[], int len) // On2, inplace
 {
         /* insert a[i] into the sorted array a[0...i-1]  */
