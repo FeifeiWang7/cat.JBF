@@ -1,9 +1,9 @@
 low---------------------------------
 	text (code) segment
 ------------------------------------
-	data segment
+	data segment (initialized global/static data)
 ------------------------------------
-	bss segment 
+	bss segment (uninitialized global/static data)
 ------------------------------------
 	heap segment
 
