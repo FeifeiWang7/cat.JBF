@@ -1,6 +1,5 @@
 // 判断奇偶
-//下面程序将输出0到100之间的所有奇数。
-for (i = 0; i < 100; ++i)  
+for (i = 0; i < 100; ++i)   //下面程序将输出0到100之间的所有奇数
     if (i & 1)  
         printf("%d ", i);  
 putchar('\n');  
@@ -63,4 +62,14 @@ uint32_t reverseBits(uint32_t n)
    n = ((n&0x55555555)<< 1 | (n&0xaaaaaaaa)>> 1);   //swap ...
    return n;
 }
-
+//count how many 1's in an integer
+int count(int a)
+{
+	int n = 0;
+	while(a)
+	{
+		if(a&1) n++;
+		a = a >> 1;	
+	}
+	return n;
+}
