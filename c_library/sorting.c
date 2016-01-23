@@ -52,9 +52,9 @@ int *MergeSort(int a[], int low, int high) // nlgn, not in place
         return a;
 }
 //////
-void max_heapify(int a[], int len, int i)
+void max_heapify(int *a, int len, int i)
 {
-        int largest = i, left = 2*i, right = 2*i + 1, tmp;
+        int largest = i, left = 2*i+1, right = 2*i+2, tmp;
         if((left < len) && (a[left] > a[largest])) largest = left;
         if((right < len) && (a[right] > a[largest])) largest = right;
         if(i != largest)
@@ -67,7 +67,7 @@ void max_heapify(int a[], int len, int i)
 }
 void build_max_heap(int a[], int len)
 {
-        for(int i = len/2; i >= 0; i--) max_heapify(a, len, i);
+        for(int i = len-1; i >= 0; i--) max_heapify(a, len, i);
 }
 int *HeapSort(int a[], int len) //nlgn, in place
 {
